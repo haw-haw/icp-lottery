@@ -11,8 +11,8 @@ This project is an example of using DFINITY's Internet Computer to create a lott
 1. Clone the repository:
 
 ```sh
-   git clone https://github.com/your-username/my-motoko-project.git
-   cd my-motoko-project
+   git clone https://github.com/haw-haw/icp-lottery.git
+   cd icp-lottery
 ```
 
 2. Install dependencies
