@@ -233,12 +233,25 @@ actor ICP_Lottery {
         } catch (err) {
             return #error(err);
         }
-}
+    }
 
     // 模拟 ICRC-1 接口中的balance查询方法
     private func ICRC1Balance() : async Nat {
         let icrc1 = actor ICRC1Token : ICRC1.ICRC1;
         let balanceResult = await icrc1.balanceOf({ owner = Principal.self });
         return balanceResult;
+    }
+
+    public shared(msg) func getWinnersList(): async [User] {
+        if (msg.caller != admin) {
+            return []; // 如果调用者不是管理员，返回空
+        }
+
+        if (isGameActive) {
+            return []; // 如果游戏仍在进行中，返回空
+        }
+
+        // 游戏已结束，返回中奖者信息
+        return await endDepositAndDrawLottery(0.5);
     }
 };
