@@ -1,0 +1,28 @@
+{
+  "canisters": {
+    "my_project": {
+      "type": "motoko",
+      "source": ["src/icp-lottery/Main.mo"],
+      "imports": {
+        "js": "src/icp-lottery/src",
+        "icrc1": "src/icp-lottery/src/icrc1"
+      }
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "ic": {
+      "providers": ["https://ic0.app"]
+    }
+  },
+  "defaults": {
+    "build": {
+      "output": "build"
+    },
+    "network": "local"
+  },
+  "version": 1
+}

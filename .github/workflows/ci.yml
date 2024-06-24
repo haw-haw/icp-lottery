@@ -1,0 +1,44 @@
+name: Continuous Integration
+
+on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#
+      branch:
+        description: 'Branch to deploy'
+        required: true
+        default: 'main'
+#      environment:
+#        description: 'Deployment environment'
+#        required: true
+#        default: 'dev'
+#        options:
+#          prod:
+#            description: 'Production environment(3838)'
+#          dev:
+#            description: 'Testing environment(7776)'
+#
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up DFX Environment
+        run: |
+          curl -o- https://sdk.dfinity.org/install.sh | bash
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Install Dependencies
+        run: dfx deps
+
+      - name: Build the Project
+        run: dfx build
+
+      - name: Run Tests
+        run: dfx test
