@@ -7,7 +7,6 @@ import ICRC1 "ic:icrc1";  // 引入 ICRC1 接口
 
 actor ICP_Lottery {
 
-    // 定义用户结构
     type User = {
         id: Nat;
         address: Principal;
@@ -148,14 +147,24 @@ actor ICP_Lottery {
         var indices = Array.tabulate<Nat>(total, func(i) { i });
         var winningIndices: [Nat] = [];
 
-        var rng = Random.new();
         for (var i = 0; i < count; i += 1) {
-            let randomIndex = rng.nextInt(indices.size());
+            let randomIndex = random_below(indices.size());
             winningIndices := Array.append<Nat>(winningIndices, [indices[randomIndex]]);
             indices := Array.removeAt<Nat>(indices, randomIndex);
         }
         return winningIndices;
     }
+
+    let SubnetManager : actor {
+        raw_rand() : async Blob;
+    } = actor "aaaaa-aa";
+
+    private func random_below(max: Nat) : async Nat {
+        assert (max > 0);
+        let bytes = await SubnetManager.raw_rand();
+        let num = Nat.parseInt("0x" # bytes.toHex(), 16) /% max;  // 将生成的随机字节作为hex来解析，并按max取模。
+        return num;
+    };
 
     // 设置管理费用费率
     public shared(msg) func setManagementFeePercentage(newPercentage: Float): async Bool {
